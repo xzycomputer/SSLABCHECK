@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import logo from '../img/logoschool.png'; // with import
 import axios from 'axios'
 
-import { useNavigate } from "react-router-dom";
+
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    let navigate = useNavigate();
 
     const onFinish = event => {
         event.preventDefault();
         axios.post('http://localhost:3001/validatePassword', { username, password })
         .then(res => {
             if(res.data.validation){
-                alert('Your password is correct')
-                return navigate("/Home");
+                localStorage.setItem('accessToken', 'Logged In');
+                localStorage.setItem('user',username)
+                window.location.replace('/');
             }
             else{
                 alert('Your password is incorrect')
@@ -26,7 +26,7 @@ export default function Login() {
     return (
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
             <div><img src={logo} className="w-[200px] mx-auto mt-24" alt="Logo"></img></div>
-            <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl  ring ring-2 ring-purple-600 lg:max-w-xl">
+            <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl  ring-purple-600 lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-purple-700  uppercase ">
                    Sign in
                 </h1>

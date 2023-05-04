@@ -1,6 +1,8 @@
 import Navbar from "../components/Navbar"
 
 function Tools() {
+  
+
     return (
         <div className="Tools">
             <Navbar></Navbar>
@@ -75,6 +77,9 @@ function Tools() {
 
                 </table>
             </div>
+           
+            
+            
 
         </div>
     )
