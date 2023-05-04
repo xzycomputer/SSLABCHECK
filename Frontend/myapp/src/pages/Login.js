@@ -25,7 +25,7 @@ export default function Login() {
 
     return (
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-            <div><img src={logo} className="w-[200px] mx-auto mt-24" alt="Logo"></img></div>
+            <div><img src={logo} className="w-[200px] mx-auto mt-36" alt="Logo"></img></div>
             <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl  ring-purple-600 lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-purple-700  uppercase ">
                    Sign in
