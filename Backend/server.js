@@ -35,6 +35,72 @@ app.post('/validatePassword',(req,res) => {
     })
 })
 
+app.get('/getchemi', (req, res) => {
+    db.all(`SELECT * FROM chemishelf`, (err, rows) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            if (rows.length > 0) {
+                const result = rows.map(row => ({
+                    name: row.name,
+                    quantity: row.quantity
+                }));
+                res.status(200).json(result);
+            } else {
+                res.status(404).send('No data found');
+            }
+        }
+    });
+});
+
+app.get('/gettool', (req, res) => {
+    db.all(`SELECT * FROM toolshelf`, (err, rows) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            if (rows.length > 0) {
+                const result = rows.map(row => ({
+                    name: row.name,
+                    quantity: row.quantity
+                }));
+                res.status(200).json(result);
+            } else {
+                res.status(404).send('No data found');
+            }
+        }
+    });
+});
+
+
+
+app.post('/addchemi', (req, res) => {
+    const { name, quantity } = req.body;
+    db.run(`INSERT INTO chemishelf (name, quantity) VALUES (?, ?)`, [name, quantity], (err) => {
+      if (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+      } else {
+        res.status(200).send('Success');
+      }
+    });
+  });
+
+
+
+
+app.post('/addtool', (req, res) => {
+    const { name, quantity } = req.body;
+    db.run(`INSERT INTO toolshelf (name, quantity) VALUES (?, ?)`, [name, quantity], (err) => {
+      if (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+      } else {
+        res.status(200).send('Success');
+      }
+    });
+  });
 
 
 app.listen(3001,()=> console.log('Listening on port 3001'))

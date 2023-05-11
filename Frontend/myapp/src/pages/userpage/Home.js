@@ -1,6 +1,31 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import Navbar from "../../components/Navbar"
 
 function Home() {
+
+
+    
+    const [chemi, setChemi] = useState([]);
+    const [tool, setTool] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/getchemi').then((response) => {
+            setChemi(response.data);
+            console.log(response.status)
+        });
+    }, []);
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/gettool').then((response) => {
+            setTool(response.data);
+            console.log(response.status)
+        });
+    }, []);
+
+
+    
     return (
         <div className="Home">
             <Navbar></Navbar>
@@ -19,33 +44,12 @@ function Home() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white dark:bg-gray-800">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-10 py-4">
-                                1
-                            </td>
-                            
-                        </tr>
-                        <tr class="bg-white dark:bg-gray-800">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Microsoft Surface Pro
-                            </th>
-                            <td class="px-10 py-4">
-                                1
-                            </td>
-                           
-                        </tr>
-                        <tr class="bg-white dark:bg-gray-800">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Magic Mouse 2
-                            </th>
-                            <td class="px-10 py-4">
-                                1
-                            </td>
-                        
-                        </tr>
+                        {chemi.map((item) => (
+                            <tr key={item.name} class="bg-white dark:bg-gray-800">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item.name}</th>
+                                <td class="px-10 py-4">{item.quantity}</td>
+                            </tr>
+                        ))}
                     </tbody>
                  
                 </table>
@@ -65,33 +69,12 @@ function Home() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white dark:bg-gray-800">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-10 py-4">
-                                1
-                            </td>
-                            
-                        </tr>
-                        <tr class="bg-white dark:bg-gray-800">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Microsoft Surface Pro
-                            </th>
-                            <td class="px-10 py-4">
-                                1
-                            </td>
-                           
-                        </tr>
-                        <tr class="bg-white dark:bg-gray-800">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Magic Mouse 2
-                            </th>
-                            <td class="px-10 py-4">
-                                1
-                            </td>
-                        
-                        </tr>
+                        {tool.map((item) => (
+                            <tr key={item.name} class="bg-white dark:bg-gray-800">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item.name}</th>
+                                <td class="px-10 py-4">{item.quantity}</td>
+                            </tr>
+                        ))}
                     </tbody>
                  
                 </table>
