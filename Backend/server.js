@@ -103,4 +103,19 @@ app.post('/addtool', (req, res) => {
   });
 
 
+app.delete('/deleteproductchemi', (req, res) => {
+    const { name } = req.body;
+    console.log(req.body)
+    db.all(`DELETE FROM chemishelf WHERE name = ?`,[name], (err) => {
+        if (err) {
+          console.error(err.message);
+          res.status(500).send('Server Error');
+        } else {
+          res.status(200).send('Success');
+        //   console.log(req.body)
+        }
+      });
+  })
+
+
 app.listen(3001,()=> console.log('Listening on port 3001'))
