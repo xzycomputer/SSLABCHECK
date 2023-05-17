@@ -43,6 +43,7 @@ app.get('/getchemi', (req, res) => {
         } else {
             if (rows.length > 0) {
                 const result = rows.map(row => ({
+                    id:row.id,
                     name: row.name,
                     quantity: row.quantity
                 }));
@@ -62,6 +63,7 @@ app.get('/gettool', (req, res) => {
         } else {
             if (rows.length > 0) {
                 const result = rows.map(row => ({
+                    id:row.id,
                     name: row.name,
                     quantity: row.quantity
                 }));
@@ -103,10 +105,24 @@ app.post('/addtool', (req, res) => {
   });
 
 
-app.delete('/deleteproductchemi', (req, res) => {
-    const { name } = req.body;
-    console.log(req.body)
-    db.all(`DELETE FROM chemishelf WHERE name = ?`,[name], (err) => {
+app.delete('/deleteproductchemi/(:id)', (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+    db.all(`DELETE FROM chemishelf WHERE id = ?`,[id], (err) => {
+        if (err) {
+          console.error(err.message);
+          res.status(500).send('Server Error');
+        } else {
+          res.status(200).send('Success');
+        //   console.log(req.body)
+        }
+      });
+  })
+
+app.delete('/deleteproducttool/(:id)', (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+    db.all(`DELETE FROM toolshelf WHERE id = ?`,[id], (err) => {
         if (err) {
           console.error(err.message);
           res.status(500).send('Server Error');
