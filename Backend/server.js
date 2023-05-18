@@ -134,4 +134,28 @@ app.delete('/deleteproducttool/(:id)', (req, res) => {
   })
 
 
+  app.put('/updatechemi', (req, res) => {
+    const { id, quantity } = req.body;
+    db.all(`UPDATE chemishelf SET quantity = ? WHERE id = ?`, [quantity, id], (err) => {
+      if (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+      } else {
+        res.status(200).send('Success');
+      }
+    });
+  });
+  
+  app.put('/updatetool', (req, res) => {
+    const { id, quantity } = req.body;
+    db.all(`UPDATE toolshelf SET quantity = ? WHERE id = ?`, [quantity, id], (err) => {
+      if (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+      } else {
+        res.status(200).send('Success');
+      }
+    });
+  });
+
 app.listen(3001,()=> console.log('Listening on port 3001'))

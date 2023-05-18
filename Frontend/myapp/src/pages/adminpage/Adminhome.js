@@ -12,7 +12,10 @@ function Adminhome() {
     const [name, setName] = useState("");
     const [quantity, setQuantity] = useState("");
 
-    const decreaseQuantity = (itemId) => {
+
+
+    
+    const decreaseQuantityChemi = (itemId) => {
         const updatedItems = chemi.map((item) => {
           if (item.id === itemId) {
             return { ...item, quantity: item.quantity - 1 };
@@ -21,8 +24,18 @@ function Adminhome() {
         });
         setChemi(updatedItems);
       };
+
+      const decreaseQuantityTool = (itemId) => {
+        const updatedItems = tool.map((item) => {
+          if (item.id === itemId) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return item;
+        });
+        setTool(updatedItems);
+      }; 
     
-      const increaseQuantity = (itemId) => {
+      const increaseQuantityChemi = (itemId) => {
         const updatedItems = chemi.map((item) => {
           if (item.id === itemId) {
             return { ...item, quantity: item.quantity + 1 };
@@ -30,6 +43,16 @@ function Adminhome() {
           return item;
         });
         setChemi(updatedItems);
+      };
+
+      const increaseQuantityTool = (itemId) => {
+        const updatedItems = tool.map((item) => {
+          if (item.id === itemId) {
+            return { ...item, quantity: item.quantity + 1 };
+          }
+          return item;
+        });
+        setTool(updatedItems);
       };
 
 
@@ -47,19 +70,36 @@ function Adminhome() {
             })
 
     }
-    // เหลือแก้ update
-    // function handleUpdateChemi(id) {
-    //     axios.update(`http://localhost:3001/updatechemi`, { id, quantity })
-    //         .then(res => {
-    //             axios.get('http://localhost:3001/getchemi').then((response) => {
-    //                 setChemi(response.data);
-    //             });
-    //             axios.get('http://localhost:3001/gettool').then((response) => {
-    //                 setTool(response.data);
-    //             });
-    //         })
 
-    // }
+    function handleUpdateChemi(id,quantity) {
+        setIsShown(current => !current);
+        axios.put(`http://localhost:3001/updatechemi`, { id, quantity })
+            .then(res => {
+                axios.get('http://localhost:3001/getchemi').then((response) => {
+                    setChemi(response.data);
+                });
+                axios.get('http://localhost:3001/gettool').then((response) => {
+                    setTool(response.data);
+                });
+                
+
+            })
+    }
+
+    function handleUpdateTool(id,quantity) {
+        setIsShowntool(current => !current);
+        axios.put(`http://localhost:3001/updatetool`, { id, quantity })
+            .then(res => {
+                axios.get('http://localhost:3001/getchemi').then((response) => {
+                    setChemi(response.data);
+                });
+                axios.get('http://localhost:3001/gettool').then((response) => {
+                    setTool(response.data);
+                });
+                
+
+            })
+    }
 
     function handleSubmitTool(e) {
         e.preventDefault();
@@ -89,6 +129,7 @@ function Adminhome() {
 
     const [isShown, setIsShown] = useState(false);
     const [isShowntool, setIsShowntool] = useState(false);
+
 
     const handleClick = event => {
         setIsShown(current => !current);
@@ -158,7 +199,7 @@ function Adminhome() {
                                         <input type="text" id="quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="จำนวน" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required></input>
                                     </div>
 
-                                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">ยืนยัน</button>
+                                    <button type="submit button" data-modal-hide="authentication-modal" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >ยืนยัน</button>
 
                                 </form>
                             </div>
@@ -187,12 +228,12 @@ function Adminhome() {
                             <tr key={item.id} class="bg-white dark:bg-gray-800">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item.name}</th>
                                 <td class="px-10 py-4 flex justify-center items-center">
-                                    {isShown && (<button onClick={() => decreaseQuantity(item.id)} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"><i class="fas fa-minus"></i></button>)}
+                                    {isShown && (<button onClick={() => decreaseQuantityChemi(item.id)} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"><i class="fas fa-minus"></i></button>)}
                                     {!isShown && (<span class="mx-2 text-white">{item.quantity}</span>)}
                                     {isShown && (<h1 class="mx-4">{item.quantity}</h1>)}
-                                    {isShown && (<button onClick={() => increaseQuantity(item.id)} class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"><i class="fas fa-plus"></i></button>)}
+                                    {isShown && (<button onClick={() => increaseQuantityChemi(item.id)} class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"><i class="fas fa-plus"></i></button>)}
                                     {isShown && (<button onClick={() => deleteClick(item.id)} class="p-2 rounded-full bg-red-500 text-white ml-4"><i class="fas fa-trash"></i></button>)}
-                                    {isShown && (<button onClick={handleClick} class="p-2 rounded-full bg-green-500 text-white ml-4"><i class="fas fa-trash"></i></button>)}
+                                    {isShown && (<button onClick={() => handleUpdateChemi(item.id,item.quantity)} class="p-2 rounded-full bg-green-500 text-white ml-4"><i class="fas fa-trash"></i></button>)}
                                 </td>
                             </tr>
                         ))}
@@ -230,7 +271,7 @@ function Adminhome() {
                                         <input type="text" id="quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="จำนวน" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required></input>
                                     </div>
 
-                                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">ยืนยัน</button>
+                                    <button type="submit button" data-modal-hide="authentication-modal2" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >ยืนยัน</button>
 
                                 </form>
                             </div>
@@ -259,11 +300,12 @@ function Adminhome() {
                             <tr key={item.id} class="bg-white dark:bg-gray-800">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item.name}</th>
                                 <td class="px-10 py-4 flex justify-center items-center">
-                                    {isShowntool && (<button onClick={() => decreaseQuantity(item.id)} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"><i class="fas fa-minus"></i></button>)}
-                                    <span class="mx-2 text-white">{item.quantity}</span>
-                                    {isShowntool && (<button onClick={() => increaseQuantity(item.id)} class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"><i class="fas fa-plus"></i></button>)}
-                                    {isShowntool && (<button onClick={() => deleteClickTool(item.id)} class="p-2 rounded-full bg-red-500 text-white ml-4"><i class="fas fa-trash"></i></button>)}
-                                    {isShowntool && (<button class="p-2 rounded-full bg-green-500 text-white ml-4"><i class="fas fa-trash"></i></button>)}
+                                    {isShowntool && (<button onClick={() => decreaseQuantityTool(item.id)} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"><i class="fas fa-minus"></i></button>)}
+                                    {!isShowntool && (<span class="mx-2 text-white">{item.quantity}</span>)}
+                                    {isShowntool && (<h1 class="mx-4">{item.quantity}</h1>)}
+                                    {isShowntool && (<button onClick={() => increaseQuantityTool(item.id)} class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"><i class="fas fa-plus"></i></button>)}
+                                    {isShowntool && (<button onClick={() => deleteClick(item.id)} class="p-2 rounded-full bg-red-500 text-white ml-4"><i class="fas fa-trash"></i></button>)}
+                                    {isShowntool && (<button onClick={() => handleUpdateTool(item.id,item.quantity)} class="p-2 rounded-full bg-green-500 text-white ml-4"><i class="fas fa-trash"></i></button>)}
                                 </td>
                             </tr>
                         ))}

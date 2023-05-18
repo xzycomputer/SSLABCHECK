@@ -5,6 +5,7 @@ import Chemicals from "./pages/userpage/Chemicals"
 import Tools from "./pages/userpage/Tools"
 import Reserve from "./pages/userpage/Reserve"
 import Adminhome from "./pages/adminpage/Adminhome"
+import AdminChemicals from "./pages/adminpage/AdminChemicals"
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
@@ -39,7 +40,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Adminhome />} />
             <Route path="/Home" element={<Adminhome />} />
-            <Route path="/Chemicals" element={<Chemicals />} />
+            <Route path="/Chemicals" element={<AdminChemicals />} />
             <Route path="/Tools" element={<Tools />} />
             <Route path="/Reserve" element={<Reserve />} />
           </Routes>
